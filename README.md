@@ -54,6 +54,12 @@ http.delete(id)
 http.cancellable('someUniqKey').get()
 ```
 
+## Query parameters
+
+```javascript
+http.query({ limit: 10, offset: 4 }).get()
+```
+
 ## API Reference
 
 | Method        | Description                                                                             |
@@ -61,6 +67,7 @@ http.cancellable('someUniqKey').get()
 | `create`      | Create a `mula` instance with defaults configs                                          |
 | `path`        | Sets a custom path for a given resource. I'll be appended to the baseURL default config |
 | `cancellable` | Makes a cancellable request                                                             |
+| `query`       | Sets query parameters passing an object                                                 |
 | `get`         | Performs a GET request                                                                  |
 | `post`        | Performs a POST request                                                                 |
 | `put`         | Performs a PUT request                                                                  |

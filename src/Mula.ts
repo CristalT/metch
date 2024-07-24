@@ -37,6 +37,13 @@ class Mula {
     return this.queue.get(this.requestKey)
   }
 
+  query(params: object): Omit<this, 'query'> {
+    Object.entries(params).forEach(([key, value]) => {
+      this.url.searchParams.append(key, value)
+    })
+    return this
+  }
+
   private async doFetch() {
     const controller = this.getController()
     if (controller) {

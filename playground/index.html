@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playground</title>
+
+    <script src="../dist/mula.umd.cjs"></script>
+
+    <style>
+      .options {
+        margin-bottom: 20px;
+      }
+      .output-container {
+        background-color: #cca;
+        padding: 20px;
+        overflow: auto;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="options">
+      <button onclick="getDitto()">Get ditto</button>
+    </div>
+
+    <div class="output-container">
+      <code id="output"></code>
+    </div>
+    <script>
+      const client = mula.create({ baseURL: 'https://pokeapi.co/api/v2/' })
+      async function getDitto() {
+        const response = await client.path('pokemon/ditto').get()
+        const output = document.getElementById('output')
+        output.innerHTML = JSON.stringify(response)
+      }
+    </script>
+  </body>
+</html>

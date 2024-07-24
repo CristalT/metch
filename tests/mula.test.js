@@ -159,5 +159,18 @@ describe('mula http Client', () => {
 
       expect(mock).toBeCalledWith(url, { method: 'PATCH', body: { name: 'Batman' } })
     })
+    describe('parameters', () => {
+      it ('requests with query parameters', async () => {
+        const mock = fetch.mockResponse(JSON.stringify([{ data: 'ok' }]))
+
+        const response = await client.query({ limit: 1 }).get('0.data')
+
+        const url = new URL(baseURL)
+        url.searchParams.append('limit', '1')
+
+        expect(mock).toBeCalledWith(url, { method: 'GET' })
+        expect(response).toBe('ok')
+      })
+    })
   })
 })

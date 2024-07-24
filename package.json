@@ -9,6 +9,7 @@
   "keywords": [],
   "main": "index.js",
   "scripts": {
+    "build": "vitest --build",
     "test": "vitest",
     "prepare": "husky",
     "lint": "eslint .",
