@@ -1,9 +1,8 @@
-export type MulaInitOptions = {
-  baseURL?: string,
-  timeout?: number,
+export interface MulaInitOptions {
+  baseURL?: string
+  timeout?: number
   headers?: Record<string, string>
 }
-
 
 export default class InitOptions {
   baseURL: string

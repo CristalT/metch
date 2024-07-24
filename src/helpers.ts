@@ -1,16 +1,20 @@
 export function get(val: { [key: string]: any }, key: string | number) {
-  if (key === '') return val;
-  if (!val || typeof val !== 'object') throw new Error('Cannot get a key from a non object value.');
+  if (key === '') {
+    return val
+  }
+  if (!val || typeof val !== 'object') {
+    throw new Error('Cannot get a key from a non object value.')
+  }
 
-  let result: any = undefined;
+  let result: any
 
   String(key)
     .split('.')
     .forEach((k) => {
-      if (!result) result = val[k];
-      else result = result[k];
+      if (!result)
+        result = val[k]
+      else result = result[k]
+    })
 
-    });
-
-  return result;
+  return result
 };

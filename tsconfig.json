@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "lib": ["es2015", "dom"],
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "module": "es2020",
+    "moduleResolution": "node",
+    "paths": {
+      "mula": ["./src/index"]
+    },
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  }
+}
