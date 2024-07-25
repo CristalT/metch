@@ -8,6 +8,7 @@ class Mula {
   private requestKey: string = ''
   private queue: Map<string, AbortController> = new Map()
   private requestInit: RequestInit = {}
+  private transformCallback: (response: any) => any = response => response
 
   constructor(options: MulaInitOptions) {
     this.options = new InitOptions(options)
@@ -17,6 +18,11 @@ class Mula {
 
   path(path: string): Omit<this, 'path'> {
     this.url = new URL(path, this.options.baseURL ?? window.location.origin)
+    return this
+  }
+
+  transform(cb: () => any): Omit<this, 'transform'> {
+    this.transformCallback = cb
     return this
   }
 
@@ -51,7 +57,9 @@ class Mula {
     }
 
     const request = fetch(this.url, this.requestInit)
-    return request.then(response => response.json())
+    const response = await request.then(response => response.json())
+
+    return this.transformCallback(response)
   }
 
   async get(key?: string) {

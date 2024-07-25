@@ -35,7 +35,7 @@ describe('mula http Client', () => {
     })
   })
 
-  describe('crud methods', () => {
+  describe('requests', () => {
     const baseURL = 'https://some-domain.com'
 
     let client
@@ -50,24 +50,23 @@ describe('mula http Client', () => {
 
     it('gets data', async () => {
       fetch.mockResponse(JSON.stringify({ data: 'test' }))
-      const url = new URL(baseURL)
 
-      const response = await client.get()
+      await client.get()
 
-      expect(fetch).toBeCalledWith(url, { method: 'GET' })
-      expect(response).toHaveProperty('data', 'test')
+      expect(fetch.requests().length).toEqual(1)
+      expect(fetch.requests()[0].url).toEqual(`${baseURL}/`)
+      expect(fetch.requests()[0].method).toEqual('GET')
     })
 
     it('gets data from custom path', async () => {
       fetch.mockResponse(JSON.stringify({ data: 'test' }))
 
       const path = 'api/v1'
-      const url = new URL(path, baseURL)
+      await client.path(path).get()
 
-      const response = await client.path(path).get()
-
-      expect(fetch).toBeCalledWith(url, { method: 'GET' })
-      expect(response).toHaveProperty('data', 'test')
+      expect(fetch.requests().length).toEqual(1)
+      expect(fetch.requests()[0].url).toEqual(`${baseURL}/${path}`)
+      expect(fetch.requests()[0].method).toEqual('GET')
     })
 
     it('gets data from specific object key', async () => {
@@ -78,30 +77,34 @@ describe('mula http Client', () => {
       expect(response).toEqual('Batman')
     })
 
+    it('transform response data', async () => {
+      fetch.mockResponse(JSON.stringify({ data: { heros: { name: 'Batman' } } }))
+
+      const response = await client.transform(response => response.data.heros).get()
+      expect(response).toEqual({ name: 'Batman' })
+    })
+
     it('performs a cancellable request', async () => {
-      const mock = fetch.mockResponse(JSON.stringify({ data: { heros: { name: 'Batman' } } }))
+      fetch.mockResponse(JSON.stringify({ data: { heros: { name: 'Batman' } } }))
 
-      await client.cancellable('cancellableRequestTest').get('data')
+      client.cancellable('cancellableRequestTest').get('data')
 
-      const url = new URL(baseURL)
-
-      expect(mock).toBeCalledWith(url, { signal: client.getController().signal, method: 'GET' })
+      expect(fetch.requests()[0]).toHaveProperty('signal', client.getController().signal)
     })
 
     it ('makes a post request', async () => {
-      const mock = fetch.mockResponse(JSON.stringify({ data: 'ok' }))
+      fetch.mockResponse(JSON.stringify({ data: 'ok' }))
 
-      const response = await client.post({ name: 'Bruce Wayne' })
-
-      expect(response).toHaveProperty('data', 'ok')
-
+      const payload = { name: 'Bruce Wayne' }
+      const response = await client.post(payload)
       const url = new URL(baseURL)
 
-      expect(mock).toBeCalledWith(url, { method: 'POST', body: { name: 'Bruce Wayne' } })
+      expect(response).toHaveProperty('data', 'ok')
+      expect(fetch).toBeCalledWith(url, { body: payload, method: 'POST' })
     })
 
     it ('makes a put request', async () => {
-      const mock = fetch.mockResponse(JSON.stringify({ data: 'ok' }))
+      fetch.mockResponse(JSON.stringify({ data: 'ok' }))
 
       const response = await client.put({ name: 'Bruce Wayne' })
 
@@ -109,67 +112,66 @@ describe('mula http Client', () => {
 
       const url = new URL(baseURL)
 
-      expect(mock).toBeCalledWith(url, { method: 'PUT', body: { name: 'Bruce Wayne' } })
+      expect(fetch).toBeCalledWith(url, { method: 'PUT', body: { name: 'Bruce Wayne' } })
     })
 
     it ('makes a delete request where its id is passed throw the path method', async () => {
-      const mock = fetch.mockResponse(JSON.stringify({ data: 'ok' }))
+      fetch.mockResponse(JSON.stringify({ data: 'ok' }))
 
       const response = await client.path('123').delete()
 
       expect(response).toHaveProperty('data', 'ok')
-
-      const url = new URL('123', baseURL)
-
-      expect(mock).toBeCalledWith(url, { method: 'DELETE' })
+      expect(fetch.requests()[0].url).toEqual(`${baseURL}/123`)
+      expect(fetch.requests()[0].method).toEqual('DELETE')
     })
 
     it ('makes a delete request where its id is passed throw the delete method', async () => {
-      const mock = fetch.mockResponse(JSON.stringify({ data: 'ok' }))
+      fetch.mockResponse(JSON.stringify({ data: 'ok' }))
 
       const response = await client.delete('123')
 
       expect(response).toHaveProperty('data', 'ok')
-
-      const url = new URL('123', baseURL)
-
-      expect(mock).toBeCalledWith(url, { method: 'DELETE' })
+      expect(fetch.requests()[0].url).toEqual(`${baseURL}/123`)
+      expect(fetch.requests()[0].method).toEqual('DELETE')
     })
 
     it ('makes a patch request', async () => {
-      const mock = fetch.mockResponse(JSON.stringify({ data: 'ok' }))
+      fetch.mockResponse(JSON.stringify({ data: 'ok' }))
 
       const response = await client.path('123').patch({ name: 'Batman' })
 
-      expect(response).toHaveProperty('data', 'ok')
-
       const url = new URL('123', baseURL)
 
-      expect(mock).toBeCalledWith(url, { method: 'PATCH', body: { name: 'Batman' } })
+      expect(response).toHaveProperty('data', 'ok')
+      expect(fetch).toBeCalledWith(url, { method: 'PATCH', body: { name: 'Batman' } })
     })
 
     it ('makes a patch request with id', async () => {
-      const mock = fetch.mockResponse(JSON.stringify({ data: 'ok' }))
+      fetch.mockResponse(JSON.stringify({ data: 'ok' }))
 
       const response = await client.patch({ name: 'Batman' }, '123')
 
-      expect(response).toHaveProperty('data', 'ok')
-
       const url = new URL('123', baseURL)
 
-      expect(mock).toBeCalledWith(url, { method: 'PATCH', body: { name: 'Batman' } })
+      expect(response).toHaveProperty('data', 'ok')
+      expect(fetch).toBeCalledWith(url, { method: 'PATCH', body: { name: 'Batman' } })
     })
-    describe('parameters', () => {
+    describe('query parameters', () => {
       it ('requests with query parameters', async () => {
-        const mock = fetch.mockResponse(JSON.stringify([{ data: 'ok' }]))
+        fetch.mockResponse(JSON.stringify([{ data: 'ok' }]))
 
         const response = await client.query({ limit: 1 }).get('0.data')
 
-        const url = new URL(baseURL)
-        url.searchParams.append('limit', '1')
-
-        expect(mock).toBeCalledWith(url, { method: 'GET' })
         expect(response).toBe('ok')
+        expect(fetch.requests()[0].url).toEqual(`${baseURL}/?limit=1`)
+      })
+      it ('requests with advanced query parameters', async () => {
+        fetch.mockResponse(JSON.stringify([{ data: 'ok' }]))
+
+        const response = await client.query({ limit: 1, fields: ['name', 'last'] }).get('0.data')
+
+        expect(response).toBe('ok')
+        expect(fetch.requests()[0].url).toEqual(`${baseURL}/?limit=1&fields=name%2Clast`)
       })
     })
   })
