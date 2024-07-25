@@ -1,13 +1,14 @@
 {
   "name": "mula",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "packageManager": "pnpm@9.5.0+sha256.dbdf5961c32909fb030595a9daa1dae720162e658609a8f92f2fa99835510ca5",
   "description": "",
   "author": "Marcelo J. Forclaz",
   "license": "ISC",
   "keywords": [],
   "main": "index.js",
+  "files": ["dist"],
   "scripts": {
     "build": "vitest --build",
     "test": "vitest",
@@ -28,5 +29,8 @@
     "typescript": "^5.5.4",
     "vitest": "^2.0.4",
     "vitest-fetch-mock": "^0.3.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@cristalt"
   }
 }
