@@ -3,7 +3,6 @@ name: Node.js Package
 on:
   release:
     types: [created]
-  
 
 jobs:
   publish-npm:
@@ -24,9 +23,10 @@ jobs:
         run: pnpm install
       - name: Build
         run: pnpm build
-      - name: Publish
-        run: npm publish
       - name: Token
         run: echo ${{secrets.NPM_TOKEN}}
+      - name: Publish
+        run: npm publish
+      
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
