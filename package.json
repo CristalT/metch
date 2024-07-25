@@ -10,7 +10,7 @@
   "main": "index.js",
   "files": ["dist"],
   "scripts": {
-    "build": "vitest --build",
+    "build": "vite build",
     "test": "vitest",
     "prepare": "husky",
     "lint": "eslint .",
