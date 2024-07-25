@@ -8,7 +8,9 @@
   "license": "ISC",
   "keywords": [],
   "main": "index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "test": "vitest",
@@ -27,6 +29,7 @@
     "jsdom": "^24.1.1",
     "lint-staged": "^15.2.7",
     "typescript": "^5.5.4",
+    "vite": "^5.3.5",
     "vitest": "^2.0.4",
     "vitest-fetch-mock": "^0.3.0"
   },
