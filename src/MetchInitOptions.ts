@@ -1,15 +1,9 @@
-export interface MulaInitOptions {
-  baseURL?: string
-  timeout?: number
-  headers?: Record<string, string>
-}
-
-export default class InitOptions {
+export default class MetchInitOptions {
   baseURL: string
   timeout?: number
   headers?: Record<string, string>
 
-  constructor(options: MulaInitOptions) {
+  constructor(options: MetchInitOptions) {
     this.baseURL = options.baseURL ?? window.location.origin
     this.timeout = options.timeout
     this.headers = options.headers

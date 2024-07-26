@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import mula from 'mula'
+import metch from 'metch'
 
-describe('mula http Client', () => {
+describe('metch http Client', () => {
   describe('initialization', () => {
     it('creates an instance with custom baseURL', () => {
       const baseURL = 'https://some-domain.com/api'
 
-      const client = mula.create({
+      const client = metch.create({
         baseURL,
       })
 
@@ -16,7 +16,7 @@ describe('mula http Client', () => {
     it('creates an instance with custom timeout', () => {
       const timeout = 1000
 
-      const client = mula.create({
+      const client = metch.create({
         timeout,
       })
       expect(client.options).toHaveProperty('timeout', timeout)
@@ -27,7 +27,7 @@ describe('mula http Client', () => {
         'content-type': 'application/json',
       }
 
-      const client = mula.create({
+      const client = metch.create({
         headers,
       })
 
@@ -43,7 +43,7 @@ describe('mula http Client', () => {
     beforeEach(() => {
       fetch.resetMocks()
 
-      client = mula.create({
+      client = metch.create({
         baseURL,
       })
     })

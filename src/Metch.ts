@@ -1,19 +1,17 @@
 import { get } from './helpers'
-import type { MulaInitOptions } from './InitOptions'
-import InitOptions from './InitOptions'
+import MetchInitOptions from './MetchInitOptions'
 
-class Mula {
-  public options: MulaInitOptions
+class Metch {
+  public options: MetchInitOptions
   public url: URL
   private requestKey: string = ''
   private queue: Map<string, AbortController> = new Map()
   private requestInit: RequestInit = {}
   private transformCallback: (response: any) => any = response => response
 
-  constructor(options: MulaInitOptions) {
-    this.options = new InitOptions(options)
+  constructor(options: MetchInitOptions) {
+    this.options = new MetchInitOptions(options)
     this.url = new URL(this.options.baseURL ?? window.location.origin)
-    return this
   }
 
   path(path: string): Omit<this, 'path'> {
@@ -111,7 +109,7 @@ class Mula {
 }
 
 export default {
-  create(options: MulaInitOptions) {
-    return new Mula(options)
+  create(options: MetchInitOptions) {
+    return new Metch(options)
   },
 }
