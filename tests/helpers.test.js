@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { get } from 'metch/helpers'
+import { get } from 'peach/helpers'
 
 describe('helpers', () => {
   describe('get', () => {

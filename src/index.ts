@@ -1,3 +1,3 @@
-import Metch from './Metch'
+import Peach from './Peach'
 
-export default Metch
+export default Peach

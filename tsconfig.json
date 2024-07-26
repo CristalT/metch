@@ -6,7 +6,7 @@
     "module": "es2020",
     "moduleResolution": "node",
     "paths": {
-      "metch": ["./src/index"]
+      "peach": ["./src/index"]
     },
     "strictFunctionTypes": true,
     "strictNullChecks": true,

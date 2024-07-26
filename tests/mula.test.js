@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import metch from 'metch'
+import peach from 'peach'
 
-describe('metch http Client', () => {
+describe('peach http Client', () => {
   describe('initialization', () => {
     it('creates an instance with custom baseURL', () => {
       const baseURL = 'https://some-domain.com/api'
 
-      const client = metch.create({
+      const client = peach.create({
         baseURL,
       })
 
@@ -16,7 +16,7 @@ describe('metch http Client', () => {
     it('creates an instance with custom timeout', () => {
       const timeout = 1000
 
-      const client = metch.create({
+      const client = peach.create({
         timeout,
       })
       expect(client.options).toHaveProperty('timeout', timeout)
@@ -27,7 +27,7 @@ describe('metch http Client', () => {
         'content-type': 'application/json',
       }
 
-      const client = metch.create({
+      const client = peach.create({
         headers,
       })
 
@@ -43,7 +43,7 @@ describe('metch http Client', () => {
     beforeEach(() => {
       fetch.resetMocks()
 
-      client = metch.create({
+      client = peach.create({
         baseURL,
       })
     })

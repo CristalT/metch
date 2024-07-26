@@ -1,16 +1,16 @@
 import { get } from './helpers'
-import MetchInitOptions from './MetchInitOptions'
+import PeachInitOptions from './PeachInitOptions'
 
-class Metch {
-  public options: MetchInitOptions
+class Peach {
+  public options: PeachInitOptions
   public url: URL
   private requestKey: string = ''
   private queue: Map<string, AbortController> = new Map()
   private requestInit: RequestInit = {}
   private transformCallback: (response: any) => any = response => response
 
-  constructor(options: MetchInitOptions) {
-    this.options = new MetchInitOptions(options)
+  constructor(options: PeachInitOptions) {
+    this.options = new PeachInitOptions(options)
     this.url = new URL(this.options.baseURL ?? window.location.origin)
   }
 
@@ -109,7 +109,7 @@ class Metch {
 }
 
 export default {
-  create(options: MetchInitOptions) {
-    return new Metch(options)
+  create(options: PeachInitOptions) {
+    return new Peach(options)
   },
 }

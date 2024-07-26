@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Playground</title>
 
-    <script src="../dist/metch.umd.cjs"></script>
+    <script src="../dist/peach.umd.cjs"></script>
 
     <style>
       .options {
@@ -28,7 +28,7 @@
       <code id="output"></code>
     </div>
     <script>
-      const client = metch.create({ baseURL: 'https://pokeapi.co/api/v2/' })
+      const client = peach.create({ baseURL: 'https://pokeapi.co/api/v2/' })
       async function getDitto() {
         const response = await client.path('pokemon/ditto').get()
         const output = document.getElementById('output')

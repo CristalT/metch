@@ -1,11 +1,11 @@
-# Metch HTTP Client
+# Peach HTTP Client
 
 ## Create an instance
 
 ```javascript
-import metch from 'metch'
+import peach from 'peach'
 
-const http = metch.create({
+const http = peach.create({
   baseURL: 'https://some-domain.com/api'
 })
 ```
@@ -64,7 +64,7 @@ http.query({ limit: 10, offset: 4 }).get()
 
 | Method        | Description                                                                             |
 | ------------- | --------------------------------------------------------------------------------------- |
-| `create`      | Create a `metch` instance with defaults configs                                         |
+| `create`      | Create a `peach` instance with defaults configs                                         |
 | `path`        | Sets a custom path for a given resource. I'll be appended to the baseURL default config |
 | `cancellable` | Makes a cancellable request                                                             |
 | `query`       | Sets query parameters passing an object                                                 |
