@@ -18,3 +18,13 @@ export function get(val: { [key: string]: any }, key: string | number) {
 
   return result
 };
+
+export function isObject(value) {
+  return typeof value === 'object'
+    && value !== null
+    && !Array.isArray(value)
+    && !(value instanceof RegExp)
+    && !(value instanceof Date)
+    && !(value instanceof Set)
+    && !(value instanceof Map)
+}

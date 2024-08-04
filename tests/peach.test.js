@@ -165,13 +165,22 @@ describe('peach http Client', () => {
         expect(response).toBe('ok')
         expect(fetch.requests()[0].url).toEqual(`${baseURL}/?limit=1`)
       })
-      it ('requests with advanced query parameters', async () => {
+      it ('requests with array query parameters', async () => {
         fetch.mockResponse(JSON.stringify([{ data: 'ok' }]))
 
         const response = await client.query({ limit: 1, fields: ['name', 'last'] }).get('0.data')
 
         expect(response).toBe('ok')
-        expect(fetch.requests()[0].url).toEqual(`${baseURL}/?limit=1&fields=name%2Clast`)
+        expect(fetch.requests()[0].url).toEqual(`${baseURL}/?fields%5B0%5D=name&fields%5B1%5D=last&limit=1`)
+      })
+
+      it ('requests with object query parameters', async () => {
+        fetch.mockResponse(JSON.stringify([{ data: 'ok' }]))
+
+        const response = await client.query({ limit: 1, filter: { name: 'test' } }).get('0.data')
+
+        expect(response).toBe('ok')
+        expect(decodeURI(fetch.requests()[0].url)).toEqual(`${baseURL}/?filter[name]=test&limit=1`)
       })
     })
   })

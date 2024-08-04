@@ -1,4 +1,4 @@
-import { get } from './helpers'
+import { get, isObject } from './helpers'
 import PeachInitOptions from './PeachInitOptions'
 
 class Peach {
@@ -9,13 +9,16 @@ class Peach {
   private requestInit: RequestInit = {}
   private transformCallback: (response: any) => any = response => response
 
-  constructor(options: PeachInitOptions) {
+  constructor(options?: PeachInitOptions) {
     this.options = new PeachInitOptions(options)
-    this.url = new URL(this.options.baseURL ?? window.location.origin)
+    if (this.options.baseURL) {
+      this.url = new URL(this.options.baseURL)
+    }
   }
 
   path(path: string): Omit<this, 'path'> {
-    this.url = new URL(path, this.options.baseURL ?? window.location.origin)
+    const { baseURL } = this.options
+    this.url = baseURL ? new URL(path, baseURL) : new URL(path, window.location.origin)
     return this
   }
 
@@ -41,10 +44,26 @@ class Peach {
     return this.queue.get(this.requestKey)
   }
 
-  query(params: object): Omit<this, 'query'> {
-    Object.entries(params).forEach(([key, value]) => {
-      this.url.searchParams.append(key, value)
+  query(params: { [key: string]: any }): Omit<this, 'query'> {
+    const paramKeysOrderedAlphabetically = Object.keys(params)
+      .filter(key => typeof params[key] !== 'undefined')
+      .filter((key) => {
+        return Array.isArray(params[key]) ? params[key].length : params[key]
+      })
+      .sort()
+
+    paramKeysOrderedAlphabetically.forEach((key) => {
+      if (typeof params[key] === 'object') {
+        Object.keys(params[key]).forEach((subkey) => {
+          const value = params[key][subkey]
+          this.url.searchParams.set(`${key}[${subkey}]`, value)
+        })
+      }
+      else {
+        this.url.searchParams.set(key, params[key])
+      }
     })
+
     return this
   }
 
@@ -60,7 +79,7 @@ class Peach {
     return this.transformCallback(response)
   }
 
-  async get(key?: string) {
+  async get<T>(key?: string): Promise<T> {
     this.requestInit.method = 'GET'
 
     const response = await this.doFetch()
@@ -72,36 +91,36 @@ class Peach {
     return response
   }
 
-  async post(payload: any) {
+  async post<T>(payload: any): Promise<T> {
     this.requestInit.method = 'POST'
     this.requestInit.body = payload
 
     return this.doFetch()
   }
 
-  async put(payload: any) {
+  async put<T>(payload: any): Promise<T> {
     this.requestInit.method = 'PUT'
     this.requestInit.body = payload
 
     return this.doFetch()
   }
 
-  async delete(id?: string) {
+  async delete<T>(id?: string): Promise<T> {
     this.requestInit.method = 'DELETE'
 
     if (id) {
-      this.url = new URL(id, this.options.baseURL)
+      this.path(id)
     }
 
     return this.doFetch()
   }
 
-  async patch(payload: any, id?: string) {
+  async patch<T>(payload: any, id?: string): Promise<T> {
     this.requestInit.method = 'PATCH'
     this.requestInit.body = payload
 
     if (id) {
-      this.url = new URL(id, this.options.baseURL)
+      this.path(id)
     }
 
     return this.doFetch()
@@ -109,7 +128,7 @@ class Peach {
 }
 
 export default {
-  create(options: PeachInitOptions) {
+  create(options?: PeachInitOptions) {
     return new Peach(options)
   },
 }

@@ -5,9 +5,12 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
-      environment: 'happy-dom',
+      environment: 'jsdom',
       reporters: 'verbose',
       setupFiles: ['./vitest.setup.ts'],
+      coverage: {
+        reporter: ['html'],
+      },
     },
   }),
 )

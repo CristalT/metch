@@ -1,19 +1,30 @@
 {
   "name": "@round12/peach",
   "type": "module",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "packageManager": "pnpm@9.5.0+sha256.dbdf5961c32909fb030595a9daa1dae720162e658609a8f92f2fa99835510ca5",
   "description": "Build HTTP powerful and requests",
   "author": "Marcelo J. Forclaz",
   "license": "ISC",
-  "keywords": ["http", "requests", "fetch", "XMLHttpRequest"],
-  "main": "index.js",
+  "keywords": [
+    "http",
+    "requests",
+    "fetch",
+    "XMLHttpRequest"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/peach.js"
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "vite build",
     "test": "vitest",
+    "test:cover": "vitest --coverage --watch=false",
     "prepare": "husky",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
@@ -21,6 +32,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^2.23.2",
     "@types/node": "^20.14.12",
+    "@vitest/coverage-v8": "^2.0.4",
     "eslint": "9.5.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-format": "^0.1.2",
@@ -30,6 +42,7 @@
     "lint-staged": "^15.2.7",
     "typescript": "^5.5.4",
     "vite": "^5.3.5",
+    "vite-plugin-dts": "4.0.0-beta.1",
     "vitest": "^2.0.4",
     "vitest-fetch-mock": "^0.3.0"
   }

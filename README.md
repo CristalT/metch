@@ -1,5 +1,11 @@
 # Peach HTTP Client
 
+## Install
+
+```sh
+$ npm i @round12/peach
+```
+
 ## Create an instance
 
 ```javascript
