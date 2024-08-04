@@ -1,4 +1,4 @@
-import { get, isObject } from './helpers'
+import { get } from './helpers'
 import PeachInitOptions from './PeachInitOptions'
 
 class Peach {
